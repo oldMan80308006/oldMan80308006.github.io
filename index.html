@@ -50,7 +50,7 @@
         
           <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
         
-        <a id="nav-search-btn" class="nav-icon" title="Zoeken"></a>
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
       </nav>
       <div id="search-form-wrap">
         <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
@@ -84,14 +84,14 @@
 <p>当添加一个扩展后，Xcode中生成一个新的故事板文件，相应的源代码文件，以及为我们的内容扩展名“的info.plist”的文件。在info.plist文件中需要注意<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">UNNotificationExtensionCategory. (Required) The value of this key is a string or an array of strings. Each string contains the identifier of a category declared by the app using the UNNotificationCategory class.</div><div class="line"></div><div class="line">UNNotificationExtensionInitialContentSizeRatio. (Required) The value of this key is a floating-point number that represents the initial size of your view controller’s view expressed as a ratio of its height to its width. The system uses this value to set the initial size of the view controller while your extension is loading. For example, a value of 0.5 results in a view controller whose height is half its width. You can change the size of your view controller after your extension loads.</div><div class="line"></div><div class="line">UNNotificationExtensionDefaultContentHidden. (Optional) The value of this key is a Boolean. When set to true, the system displays only your custom view controller in the notification interface. When set to false, the system displays the default notification content in addition to your view controller’s content. Custom action buttons and the Dismiss button are always displayed, regardless of this setting. If you do not specify this key, the default value is set to false.</div></pre></td></tr></table></figure></p>
 <p><img src="http://7i7ht3.com1.z0.glb.clouddn.com/2.png" alt="MacDown"></p>
 <p>自定义界面是不能与用户交互的，需要交互需要重载以下方法，然后通过button点击事件交互<br><figure class="highlight plain"><figcaption><span>didReceive(_ response: UNNotificationResponse, completionHandler completion: (UNNotificationContentExtensionResponseOption) -> Void) &#123;</span></figcaption><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">server.sendEventRespose(actionIdentifier: response.actionIdentifier) &#123;</div><div class="line">completion(.dismiss)</div><div class="line">&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-<p>或者将action传递给app <code>done(.dismissAndForwardAction)</code>    </p>
+<p>或者将action传递给app <code>completion(.dismissAndForwardAction)</code>    </p>
 <p>最后customUI的样子如下：<br><img src="http://7i7ht3.com1.z0.glb.clouddn.com/5.jpg" alt="MacDown"></p>
 <p><a href="https://github.com/oldMan80308006/UserNotification" target="_blank" rel="external">githubDemo</a></p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/07/12/iOS10 UserNotificaiton /" data-id="ciqlwm4n10000zpyd229zgvif" class="article-share-link">Delen</a>
+      <a data-url="http://yoursite.com/2016/07/12/iOS10 UserNotificaiton /" data-id="ciqlx1cp300000dydj36zh3ww" class="article-share-link">Share</a>
       
       
     </footer>
@@ -116,7 +116,7 @@
   
     
   <div class="widget-wrap">
-    <h3 class="widget-title">Archieven</h3>
+    <h3 class="widget-title">Archives</h3>
     <div class="widget">
       <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/07/">July 2016</a></li></ul>
     </div>
@@ -126,7 +126,7 @@
   
     
   <div class="widget-wrap">
-    <h3 class="widget-title">Recente berichten</h3>
+    <h3 class="widget-title">Recent Posts</h3>
     <div class="widget">
       <ul>
         
