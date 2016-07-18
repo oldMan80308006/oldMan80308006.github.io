@@ -19,7 +19,7 @@
 <meta property="og:image" content="http://7i7ht3.com1.z0.glb.clouddn.com/11.png">
 <meta property="og:image" content="http://7i7ht3.com1.z0.glb.clouddn.com/12.png">
 <meta property="og:image" content="http://7i7ht3.com1.z0.glb.clouddn.com/13.png">
-<meta property="og:updated_time" content="2016-07-18T02:07:18.000Z">
+<meta property="og:updated_time" content="2016-07-18T02:10:32.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Hexo">
 <meta name="twitter:description" content="iOS10 UserNotificaitonApple的推送通知在iOS10中有了更视觉化的更新。我们可以在通知中加入图片，视频，音频，甚至可以自定义内容的展示。还可以通过用户与通知的交互推测用户所感兴趣的推送内容。大部分功能来至于以下三个新的特性： Media Attachments ，Notificaiton Service Extensions，Notificaiotn Content Ex">
@@ -95,7 +95,7 @@
 <p>首先定义了一个didReceive的方法，用来接收request，后面跟着withContentHandler的回调函数。    </p>
 <p>这个NotificationServiceExtension会在收到推送之后，被调用，然后在这个方法里面去下载自己的attachment。下载可以通过URL，或者任何你喜欢的方式。当下载完成之后，就可以创建attachment对象了。创建完UNMutableNotificationContent，我们就可以把这个加入到推送的content中了。最后，通过contentHandler回调，把它传递给iOS系统，iOS 系统就会展示给用户。<br><img src="http://7i7ht3.com1.z0.glb.clouddn.com/6.jpg" alt="MacDown"></p>
 <p><strong>注意</strong> 在service extension里面去下载attachment，但是需要注意，service extension会限制下载的时间，并且下载的文件大小也会同样被限制<br>我们可以在func serviceExtensionTimeWillExpire()优雅的解time expire 的问题<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">override func serviceExtensionTimeWillExpire() &#123;</div><div class="line">// Called just before the extension will be terminated by the system.</div><div class="line">// Use this as an opportunity to deliver your &quot;best attempt&quot; at modified content, otherwise the original push payload will be used.</div><div class="line">if let contentHandler = contentHandler, let bestAttemptContent =  bestAttemptContent &#123;</div><div class="line">contentHandler(bestAttemptContent)</div><div class="line">&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-<h2 id="Notificaiton-Content-Extension"><a href="#Notificaiton-Content-Extension" class="headerlink" title="Notificaiton Content Extension"></a>Notificaiton Content Extension</h2><p><strong>Notification Content Extension</strong>类似于Notification Service Extension可以为通知提供新内容，与其不同的是content extionsion在本地和远程通知中都可以应用，content extsion 不仅仅是为了在提供通知中提供附加媒信息，更重要的是为了向用户展示自定义的通知内容展示界面。  </p>
+<h2 id="Notificaiton-Content-Extension"><a href="#Notificaiton-Content-Extension" class="headerlink" title="Notificaiton Content Extension"></a>Notificaiton Content Extension</h2><p><strong><a href="https://developer.apple.com/reference/usernotificationsui/unnotificationcontentextension" target="_blank" rel="external">Notification Content Extension</a></strong>类似于Notification Service Extension可以为通知提供新内容，与其不同的是content extionsion在本地和远程通知中都可以应用，content extsion 不仅仅是为了在提供通知中提供附加媒信息，更重要的是为了向用户展示自定义的通知内容展示界面。  </p>
 <p>当添加一个扩展后，Xcode中生成一个新的故事板文件，相应的源代码文件，以及为我们的内容扩展名“的info.plist”的文件。<br>Notification content extension允许开发者加入自定义的界面，在这个界面里面，你可以绘制任何你想要的东西。但是有一个最重要的限制就是，这个自定义的界面没有交互。它们不能接受点击事件，用户并不能点击它们。但是推送通知还是可以继续与用户进行交互，因为用户可以使用notificaiton的actions。extension可以处理这些actions。</p>
 <p>接下来我们就来说说如何自定义界面    </p>
 <p><strong>1. 推送的四部分</strong><br>先来看一个WWDC中介绍的日历推送例子：<br><img src="http://7i7ht3.com1.z0.glb.clouddn.com/7.jpg" alt="MacDown"></p>
@@ -126,7 +126,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/07/12/iOS10 UserNotificaiton /" data-id="ciqre5egx0000poydwmhalk4v" class="article-share-link">Partager</a>
+      <a data-url="http://yoursite.com/2016/07/12/iOS10 UserNotificaiton /" data-id="ciqre9fpl0000q1yd1wvmackb" class="article-share-link">Partager</a>
       
       
     </footer>
