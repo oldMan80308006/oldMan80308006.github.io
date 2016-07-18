@@ -87,7 +87,7 @@
 <h2 id="Notificaiton-Content-Extension"><a href="#Notificaiton-Content-Extension" class="headerlink" title="Notificaiton Content Extension"></a>Notificaiton Content Extension</h2><p><strong>Notification Content Extension</strong>类似于Notification Service Extension可以为通知提供新内容，与其不同的是content extionsion在本地和远程通知中都可以应用，content extsion 不仅仅是为了在提供通知中提供附加媒信息，更重要的是为了向用户展示自定义的通知内容展示界面。  </p>
 <p>当添加一个扩展后，Xcode中生成一个新的故事板文件，相应的源代码文件，以及为我们的内容扩展名“的info.plist”的文件。<br>Notification content extension允许开发者加入自定义的界面，在这个界面里面，你可以绘制任何你想要的东西。但是有一个最重要的限制就是，这个自定义的界面没有交互。它们不能接受点击事件，用户并不能点击它们。但是推送通知还是可以继续与用户进行交互，因为用户可以使用notificaiton的actions。extension可以处理这些actions。</p>
 <p>接下来我们就来说说如何自定义界面    </p>
-<p><strong>1. 推送的四部分</strong><br>先来看一个日历的推送例子：<br><img src="http://7i7ht.com1.z0.glb.clouddn.com/2.png" alt="MacDown"></p>
+<p><strong>1. 推送的四部分</strong><br>先来看一个WWDC中介绍的日历推送例子：<br><img src="http://7i7ht.com1.z0.glb.clouddn.com/2.png" alt="MacDown"></p>
 <p>上图，整个推送分4段。用户可以通过点击Header里面的icon来打开app，点击取消来取消显示推送。Header的UI是系统提供的一套标准的UI。这套UI会提供给所有的推送通知。</p>
 <p>Header下面是自定义内容，这里就是显示的Notification content extension。在这里，就可以显示任何你想绘制的内容了。你可以展示任何额外的有用的信息给用户。</p>
 <p>content extension下面就是default content。这里是系统的界面。这里的系统界面就是上面推送里面payload里面附带的内容。这也就是iOS 9 之前的推送的样子。</p>
@@ -114,7 +114,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/07/12/iOS10 UserNotificaiton /" data-id="ciqrbvs0y0000c8ydsft8rv3x" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2016/07/12/iOS10 UserNotificaiton /" data-id="ciqrbxphy0000chydz9wgszvb" class="article-share-link">Share</a>
       
       
     </footer>
