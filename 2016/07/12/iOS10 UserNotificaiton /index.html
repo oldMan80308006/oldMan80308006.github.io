@@ -19,7 +19,7 @@
 <meta property="og:image" content="http://7i7ht3.com1.z0.glb.clouddn.com/11.png">
 <meta property="og:image" content="http://7i7ht3.com1.z0.glb.clouddn.com/12.png">
 <meta property="og:image" content="http://7i7ht3.com1.z0.glb.clouddn.com/13.png">
-<meta property="og:updated_time" content="2016-07-18T01:37:40.000Z">
+<meta property="og:updated_time" content="2016-07-18T01:44:16.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Hexo">
 <meta name="twitter:description" content="iOS10 UserNotificaitonApple的推送通知在iOS10中有了更视觉化的更新。我们可以在通知中加入图片，视频，音频，甚至可以自定义内容的展示。还可以通过用户与通知的交互推测用户所感兴趣的推送内容。大部分功能来至于以下三个新的特性： Media Attachments ，Notificaiton Service Extensions，Notificaiotn Content Ex">
@@ -117,7 +117,7 @@
 <p>##Customize Actions<br>说道这里，我们不得不说一下iOS8开始引入的action的工作原理：</p>
 <p>默认系统的Action的处理是，当用户点击的按钮，就把action传递给app，与此同时，推送通知会立即消失。这种做法很方便。</p>
 <p>但是还有一种情况，当用户点击了按钮，希望接受一些日历上的邀请，我们需要把这个操作即时的展示在我们自定义的UI上，这是我们就只能用Notification content extension来处理这些用户点击事件了。这个时候，用户点击完按钮，我们把这个action直接传递给extension，而不是传递给app。当actions传递给extension时，它可以延迟推送通知的消失时间。在这段延迟的时间之内，我们就可以处理用户点击按钮的事件了，并且更新UI，一切都处理完成之后，我们再去让推送通知消失掉。</p>
-<p>这里我们可以运用UNNotificationContentExtension协议的第二个方法，这方法是Optional<br><figure class="highlight plain"><figcaption><span>Intercepting notification action response</span></figcaption><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">class NotificationViewController: UIViewController, UNNotificationContentExtension &#123;</div><div class="line">func didReceive(_ response: UNNotificationResponse, completionHandler done: (UNNotificationContentExtensionResponseOption) -&gt; Void) &#123;</div><div class="line">server.postEventResponse(response.actionIdentifier) &#123;</div><div class="line">if response.actionIdentifier == &quot;accept&quot; &#123;</div><div class="line">eventResponse.text = &quot;Going!&quot;</div><div class="line">eventResponse.textColor = UIColor.green()</div><div class="line">&#125; else if response.actionIdentifier == &quot;decline&quot; &#123;</div><div class="line">eventResponse.text = &quot;Not going :(&quot;</div><div class="line">eventResponse.textColor = UIColor.red()</div><div class="line">&#125;</div><div class="line">done(.dismiss)</div><div class="line">&#125;</div><div class="line">&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>这里我们可以运用UNNotificationContentExtension协议的第二个方法，这方法是Optional。下面这是WWDC中的示例代码<br><figure class="highlight plain"><figcaption><span>Intercepting notification action response</span></figcaption><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">class NotificationViewController: UIViewController, UNNotificationContentExtension &#123;</div><div class="line">func didReceive(_ response: UNNotificationResponse, completionHandler done: (UNNotificationContentExtensionResponseOption) -&gt; Void) &#123;</div><div class="line">server.postEventResponse(response.actionIdentifier) &#123;</div><div class="line">if response.actionIdentifier == &quot;accept&quot; &#123;</div><div class="line">eventResponse.text = &quot;Going!&quot;</div><div class="line">eventResponse.textColor = UIColor.green()</div><div class="line">&#125; else if response.actionIdentifier == &quot;decline&quot; &#123;</div><div class="line">eventResponse.text = &quot;Not going :(&quot;</div><div class="line">eventResponse.textColor = UIColor.red()</div><div class="line">&#125;</div><div class="line">done(.dismiss)</div><div class="line">&#125;</div><div class="line">&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
 <p>不用这个方法的时候就可以不声明出来。但是一旦声明了，那么你就需要在这个方法里面处理推送通知里面所有的actions。这就意味着你不能只处理一个action，而不管其他的action。    </p>
 <p>这里值得一提的是，如果你还想把这个action传递给app，那么最后的参数应该是这样。<code>done(.dismissAndForwardAction)</code><br>参数设置成这样之后，用户的action就会再传递给app。</p>
 <p><a href="https://github.com/oldMan80308006/UserNotification" target="_blank" rel="external">githubDemo</a></p>
@@ -126,7 +126,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/07/12/iOS10 UserNotificaiton /" data-id="ciqrd378k0000jyydt7uusgwy" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2016/07/12/iOS10 UserNotificaiton /" data-id="ciqrdbopu0000nsyd6tz96ybz" class="article-share-link">Share</a>
       
       
     </footer>
