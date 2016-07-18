@@ -50,7 +50,7 @@
         
           <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
         
-        <a id="nav-search-btn" class="nav-icon" title="Zoeken"></a>
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
       </nav>
       <div id="search-form-wrap">
         <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
@@ -79,13 +79,13 @@
 <p>Media Attachment的工作方式在本地通知与很远程通知之间有些小小的不同。 当本地通时， media attachment 中必须包含磁盘中媒体附件的URL。远程通知时 ，消息都在APNS的推送载荷中，在只有4K的载荷中，只能在 payload的my-attachment 字段中指定我们需要处理的信息，可能是url 或者任何标识符<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">&#123;</div><div class="line">&#123;</div><div class="line">aps: &#123;</div><div class="line">alert : &#123;……&#125;</div><div class="line">mutable-content : 1</div><div class="line">&#125;</div><div class="line">my-attachment : https://example.com/phtos.jpg&quot;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
 <p>iOS 10 并不会自动的在通知中加入媒体附件。为解决这个问题，Notificaiton Service Extension 隆重出场了</p>
 <h2 id="Notificaiton-Service-Extension"><a href="#Notificaiton-Service-Extension" class="headerlink" title="Notificaiton Service Extension"></a>Notificaiton Service Extension</h2><p><a href="https://developer.apple.com/reference/usernotifications/unnotificationserviceextension" target="_blank" rel="external">Notification Service Extension</a> 通过设置完上述的部分，推送就被推送到了每个设备的Service Extension那里了。在每个设备里面的Service Extension里面，就可以下载任意想要的attachment了。然后推送就会带着下载好的attachment推送到手机并显示出来了。    </p>
-<p>如果来设置Service Extension呢？来看看如下WWDC中的示例代码:</p>
+<p>如何来设置Service Extension呢？来看看如下WWDC中的示例代码:</p>
 <figure class="highlight plain"><figcaption><span>Adding an attachment to a user notification</span></figcaption><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">public class NotificationService: UNNotificationServiceExtension &#123;</div><div class="line">override public func didReceive(_ request: UNNotificationRequest, withContentHandler contentHandler: (UNNotificationContent) -&gt; Void)</div><div class="line">&#123;</div><div class="line">let fileURL = // ...</div><div class="line">let attachment = UNNotificationAttachment(identifier: &quot;image&quot;,</div><div class="line">url: fileURL,</div><div class="line">options: nil)</div><div class="line">let content = request.content.mutableCopy as! UNMutableNotificationContent</div><div class="line">content.attachments = [ attachment ]</div><div class="line">contentHandler(content)</div><div class="line">&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <p>首先定义了一个didReceive的方法，用来接收request，后面跟着withContentHandler的回调函数。    </p>
 <p>这个NotificationServiceExtension会在收到推送之后，被调用，然后在这个方法里面去下载自己的attachment。下载可以通过URL，或者任何你喜欢的方式。当下载完成之后，就可以创建attachment对象了。创建完UNMutableNotificationContent，我们就可以把这个加入到推送的content中了。最后，通过contentHandler回调，把它传递给iOS系统，iOS 系统就会展示给用户。<br><img src="http://7i7ht3.com1.z0.glb.clouddn.com/6.jpg" alt="MacDown"></p>
 <p><strong>注意</strong> 在service extension里面去下载attachment，但是需要注意，service extension会限制下载的时间，并且下载的文件大小也会同样被限制<br>我们可以在func serviceExtensionTimeWillExpire()优雅的解time expire 的问题<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">override func serviceExtensionTimeWillExpire() &#123;</div><div class="line">// Called just before the extension will be terminated by the system.</div><div class="line">// Use this as an opportunity to deliver your &quot;best attempt&quot; at modified content, otherwise the original push payload will be used.</div><div class="line">if let contentHandler = contentHandler, let bestAttemptContent =  bestAttemptContent &#123;</div><div class="line">contentHandler(bestAttemptContent)</div><div class="line">&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
 <h2 id="Notificaiton-Content-Extension"><a href="#Notificaiton-Content-Extension" class="headerlink" title="Notificaiton Content Extension"></a>Notificaiton Content Extension</h2><p><strong><a href="https://developer.apple.com/reference/usernotificationsui/unnotificationcontentextension" target="_blank" rel="external">Notification Content Extension</a></strong>类似于Notification Service Extension可以为通知提供新内容，与其不同的是content extionsion在本地和远程通知中都可以应用，content extsion 不仅仅是为了在提供通知中提供附加媒信息，更重要的是为了向用户展示自定义的通知内容展示界面。  </p>
-<p>当添加一个扩展后，Xcode中生成一个新的故事板文件，相应的源代码文件，以及为我们的内容扩展名“的info.plist”的文件。<br>Notification content extension允许开发者加入自定义的界面，在这个界面里面，你可以绘制任何你想要的东西。但是有一个最重要的限制就是，这个自定义的界面没有交互。它们不能接受点击事件，用户并不能点击它们。但是推送通知还是可以继续与用户进行交互，因为用户可以使用notificaiton的actions。extension可以处理这些actions。</p>
+<p>当添加一个扩展后，Xcode中生成一个新的storyboard文件，相应的源代码文件，以及为我们的内容扩展名“的info.plist”的文件。<br>Notification content extension允许开发者加入自定义的界面，在这个界面里面，你可以绘制任何你想要的东西。但是有一个最重要的限制就是，这个自定义的界面没有交互。它们不能接受点击事件，用户并不能点击它们。但是推送通知还是可以继续与用户进行交互，因为用户可以使用notificaiton的actions。extension可以处理这些actions。</p>
 <p>接下来我们就来说说如何自定义界面    </p>
 <p><strong>1. 推送的四部分</strong><br>先来看一个WWDC中介绍的日历推送例子：<br><img src="http://7i7ht3.com1.z0.glb.clouddn.com/7.jpg" alt="MacDown"></p>
 <p>上图，整个推送分4段。用户可以通过点击Header里面的icon来打开app，点击取消来取消显示推送。Header的UI是系统提供的一套标准的UI。这套UI会提供给所有的推送通知。</p>
@@ -115,7 +115,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/07/12/iOS10 UserNotificaiton /" data-id="ciqregvej0000vzydtl2ol2z1" class="article-share-link">Delen</a>
+      <a data-url="http://yoursite.com/2016/07/12/iOS10 UserNotificaiton /" data-id="ciqrgg4e0000076yddgtxnxom" class="article-share-link">Share</a>
       
       
     </footer>
@@ -140,7 +140,7 @@
   
     
   <div class="widget-wrap">
-    <h3 class="widget-title">Archieven</h3>
+    <h3 class="widget-title">Archives</h3>
     <div class="widget">
       <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/07/">July 2016</a></li></ul>
     </div>
@@ -150,7 +150,7 @@
   
     
   <div class="widget-wrap">
-    <h3 class="widget-title">Recente berichten</h3>
+    <h3 class="widget-title">Recent Posts</h3>
     <div class="widget">
       <ul>
         
