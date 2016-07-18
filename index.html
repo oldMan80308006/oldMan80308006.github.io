@@ -92,7 +92,7 @@
 <p>Header下面是自定义内容，这里就是显示的Notification content extension。在这里，就可以显示任何你想绘制的内容了。你可以展示任何额外的有用的信息给用户。</p>
 <p>content extension下面就是default content。这里是系统的界面。这里的系统界面就是上面推送里面payload里面附带的内容。这也就是iOS 9 之前的推送的样子。</p>
 <p>最下面一段就是notification action了。在这一段，用户可以触发一些操作。并且这些操作还会相应的反映到上面的自定义的推送界面content extension中。</p>
-<p><strong>2.创建Notification content extension</strong><br>接下来我们就来看看如何创建一个Notification content extension<br><img src="http://7i7ht3.com1.z0.glb.clouddn.com/2.p" alt="MacDown"><br>第一件事就是去创建一个新的target。创建好了之后，Xcode会自动帮我们生成一个template。template会在新的target里面生成3个文件，一个新的ViewController，main Interface storyboard，info.plist。info.plist中就是可以定义化一些target的配置。    </p>
+<p><strong>2.创建Notification content extension</strong><br>接下来我们就来看看如何创建一个Notification content extension<br><img src="http://photo.weibo.com/5742432378/photos/detail/photo_id/3998517067660335" alt="MacDown"><br>第一件事就是去创建一个新的target。创建好了之后，Xcode会自动帮我们生成一个template。template会在新的target里面生成3个文件，一个新的ViewController，main Interface storyboard，info.plist。info.plist中就是可以定义化一些target的配置。    </p>
 <p>打开Notification content extension的ViewController</p>
 <figure class="highlight plain"><figcaption><span>Minimal Content Extension</span></figcaption><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">class NotificationViewController: UIViewController, UNNotificationContentExtension &#123;</div><div class="line">@IBOutlet var label: UILabel?</div><div class="line">override func viewDidLoad() &#123;</div><div class="line">super.viewDidLoad()</div><div class="line">// Do any required interface initialization here.</div><div class="line">&#125;</div><div class="line">func didReceive(_ notification: UNNotification) &#123;</div><div class="line">label?.text = notification.request.content.body</div><div class="line">&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <p>我们会发现，这个ViewController是UIViewController的子类，其实就是一个很普通的ViewController，和我们平时使用的没有啥两样。后面是UNNotificationContentExtension的protocol，这里是系统要求你必须实现的协议。</p>
@@ -114,7 +114,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/07/12/iOS10 UserNotificaiton /" data-id="ciqrbxphy0000chydz9wgszvb" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2016/07/12/iOS10 UserNotificaiton /" data-id="ciqrc5nym0000d4ydjces7037" class="article-share-link">Share</a>
       
       
     </footer>
