@@ -18,7 +18,7 @@
 <meta property="og:image" content="http://7i7ht3.com1.z0.glb.clouddn.com/2.p">
 <meta property="og:image" content="http://7i7ht3.com1.z0.glb.clouddn.com/2.pn">
 <meta property="og:image" content="http://7i7ht3.com1.z0.glb.clouddn.com/2.pn">
-<meta property="og:updated_time" content="2016-07-18T01:03:11.000Z">
+<meta property="og:updated_time" content="2016-07-18T01:03:55.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Hexo">
 <meta name="twitter:description" content="iOS10 UserNotificaitonApple的推送通知在iOS10中有了更视觉化的更新。我们可以在通知中加入图片，视频，音频，甚至可以自定义内容的展示。还可以通过用户与通知的交互推测用户所感兴趣的推送内容。大部分功能来至于以下三个新的特性： Media Attachments ，Notificaiton Service Extensions，Notificaiotn Content Ex">
@@ -62,7 +62,7 @@
         
           <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
         
-        <a id="nav-search-btn" class="nav-icon" title="Zoeken"></a>
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
       </nav>
       <div id="search-form-wrap">
         <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
@@ -103,7 +103,8 @@
 <p>content extension下面就是default content。这里是系统的界面。这里的系统界面就是上面推送里面payload里面附带的内容。这也就是iOS 9 之前的推送的样子。</p>
 <p>最下面一段就是notification action了。在这一段，用户可以触发一些操作。并且这些操作还会相应的反映到上面的自定义的推送界面content extension中。</p>
 <p><strong>2.创建Notification content extension</strong><br>接下来我们就来看看如何创建一个Notification content extension<br><img src="http://7i7ht3.com1.z0.glb.clouddn.com/2.p" alt="MacDown"><br>第一件事就是去创建一个新的target。创建好了之后，Xcode会自动帮我们生成一个template。template会在新的target里面生成3个文件，一个新的ViewController，main Interface storyboard，info.plist。info.plist中就是可以定义化一些target的配置。    </p>
-<p>打开Notification content extension的ViewController<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">// Minimal Content Extension</div><div class="line">class NotificationViewController: UIViewController, UNNotificationContentExtension &#123;</div><div class="line">@IBOutlet var label: UILabel?</div><div class="line">override func viewDidLoad() &#123;</div><div class="line">super.viewDidLoad()</div><div class="line">// Do any required interface initialization here.</div><div class="line">&#125;</div><div class="line">func didReceive(_ notification: UNNotification) &#123;</div><div class="line">label?.text = notification.request.content.body</div><div class="line">&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>打开Notification content extension的ViewController</p>
+<figure class="highlight plain"><figcaption><span>Minimal Content Extension</span></figcaption><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">class NotificationViewController: UIViewController, UNNotificationContentExtension &#123;</div><div class="line">@IBOutlet var label: UILabel?</div><div class="line">override func viewDidLoad() &#123;</div><div class="line">super.viewDidLoad()</div><div class="line">// Do any required interface initialization here.</div><div class="line">&#125;</div><div class="line">func didReceive(_ notification: UNNotification) &#123;</div><div class="line">label?.text = notification.request.content.body</div><div class="line">&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <p>我们会发现，这个ViewController是UIViewController的子类，其实就是一个很普通的ViewController，和我们平时使用的没有啥两样。后面是UNNotificationContentExtension的protocol，这里是系统要求你必须实现的协议。</p>
 <p>UNNotificationContentExtension只有一个required的方法，就是didReceive方法。当推送到达你的设备之后，这个didReceive方法会随着ViewController的生命周期的方法 ，一起被调用。当开发者给推送加上expands的时候，一旦推送送达以后，这时会接到所有的ViewController生命周期的方法，和didReceive方法。这样，我们就可以接收notification object ，接着更新UI</p>
 <p><strong>3. 配置target</strong><br>接下来，我们需要做的是，告诉iOS系统，推送送达之后，iOS系统如何找到你自定义的Notification content extension。<img src="http://7i7ht3.com1.z0.glb.clouddn.com/2.pn" alt="MacDown"><br>Notification content extension和我们注册notification actions一样，注册的相同的category。值得提到的一点是，这里的extension是可以为一个数组的，里面可以为多个category，这样做的目的是多个category共用同一套UI。<br>上图中，content0和 content1就共用了一套UI。这样我们就可以把他们打包到一个extension里面来。但是不同的category是独立的，他们可以相应不同的actions。通过以上设置，iOS系统就知道了我们的target了。<br>通过UNNotificationExtensionDefaultContentHidden设置默认的content是否隐藏。通过UNNotificationExtensionInitialContentSizeRatio定义CustomView的宽和高的比例     </p>
@@ -123,7 +124,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/07/12/iOS10 UserNotificaiton /" data-id="ciqrbutj90000c1yd42tbfci9" class="article-share-link">Delen</a>
+      <a data-url="http://yoursite.com/2016/07/12/iOS10 UserNotificaiton /" data-id="ciqrbvs0y0000c8ydsft8rv3x" class="article-share-link">Share</a>
       
       
     </footer>
@@ -147,7 +148,7 @@
   
     
   <div class="widget-wrap">
-    <h3 class="widget-title">Archieven</h3>
+    <h3 class="widget-title">Archives</h3>
     <div class="widget">
       <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/07/">July 2016</a></li></ul>
     </div>
@@ -157,7 +158,7 @@
   
     
   <div class="widget-wrap">
-    <h3 class="widget-title">Recente berichten</h3>
+    <h3 class="widget-title">Recent Posts</h3>
     <div class="widget">
       <ul>
         
